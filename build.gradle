@@ -1,12 +1,24 @@
-apply plugin: 'java'
+buildscript {
+    repositories {
+        jcenter()
+    }
 
-sourceCompatibility = 1.5
-version = '1.0'
+    dependencies {
+        classpath 'org.javafxports:jfxmobile-plugin:1.0.0-b4'
+    }
+}
+
+apply plugin: 'org.javafxports.jfxmobile'
+
+mainClassName = 'com.ryosms.address.MainApp'
 
 repositories {
-    mavenCentral()
+    jcenter()
 }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+jfxmobile {
+    android {
+        applicationPackage = 'com.ryosms.address'
+    }
 }
+
