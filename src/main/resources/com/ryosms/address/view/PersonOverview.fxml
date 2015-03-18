@@ -52,7 +52,7 @@
                         <Label text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
-                  <HBox layoutX="222.0" layoutY="258.0" spacing="5.0">
+                  <HBox layoutX="222.0" layoutY="258.0" spacing="5.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="5.0">
                      <children>
                         <Button layoutX="64.0" layoutY="258.0" mnemonicParsing="false" text="New..." />
                         <Button layoutX="136.0" layoutY="258.0" mnemonicParsing="false" text="Edit..." />
