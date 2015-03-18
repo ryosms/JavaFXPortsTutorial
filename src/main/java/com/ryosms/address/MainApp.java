@@ -56,4 +56,18 @@ public class MainApp extends Application {
         // root layoutのcenterにperson overviewを表示する
         rootLayout.setCenter(personOverview);
     }
+
+    /**
+     * Returns the main stage.
+     *
+     * @return
+     */
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 }
