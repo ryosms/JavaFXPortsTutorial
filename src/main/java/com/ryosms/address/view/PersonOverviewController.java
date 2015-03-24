@@ -2,6 +2,7 @@ package com.ryosms.address.view;
 
 import com.ryosms.address.MainApp;
 import com.ryosms.address.model.Person;
+import com.ryosms.address.util.DateUtil;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -53,6 +54,38 @@ public class PersonOverviewController {
         this.mainApp = mainApp;
 
         personTable.setItems(mainApp.getPersonData());
+
+        // Personの詳細表示をクリアする
+        showPersonDetails(null);
+
+        // テーブルが選択されたら詳細表示を行うリスナーを登録
+        personTable.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> showPersonDetails(newValue));
+    }
+
+    /**
+     * Personの詳細をラベルに表示する
+     * パラメータがnullの場合は全ラベルをクリアする
+     *
+     * @param person the person or null
+     */
+    private void showPersonDetails(Person person) {
+        if (person != null) {
+            firstNameLabel.setText(person.getFirstName());
+            lastNameLabel.setText(person.getLastName());
+            streetLabel.setText(person.getStreet());
+            postalCodeLabel.setText(Integer.toString(person.getPostalCode()));
+            cityLabel.setText(person.getCity());
+            birthdayLabel.setText(DateUtil.format(person.getBirthday()));
+        } else {
+            firstNameLabel.setText("");
+            lastNameLabel.setText("");
+            streetLabel.setText("");
+            postalCodeLabel.setText("");
+            cityLabel.setText("");
+            birthdayLabel.setText("");
+        }
+
     }
 
 }
