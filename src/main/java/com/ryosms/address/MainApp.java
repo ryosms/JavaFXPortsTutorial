@@ -1,6 +1,7 @@
 package com.ryosms.address;
 
 import com.ryosms.address.model.Person;
+import com.ryosms.address.view.PersonOverviewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,6 +80,10 @@ public class MainApp extends Application {
 
         // root layoutのcenterにperson overviewを表示する
         rootLayout.setCenter(personOverview);
+
+        // コントローラにMainAppへの参照を渡す
+        PersonOverviewController controller = loader.getController();
+        controller.setMainApp(this);
     }
 
     /**
