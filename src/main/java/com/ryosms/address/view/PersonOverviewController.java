@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.io.IOException;
+
 public class PersonOverviewController {
 
     @FXML
@@ -104,6 +106,43 @@ public class PersonOverviewController {
 
             alert.showAndWait();
         }
+    }
+
+    /**
+     * Newボタンをクリックしたら呼び出される。
+     * 新規Personの編集用ダイアログを表示する
+     */
+    @FXML
+    private void handleNewPerson() throws IOException {
+        Person tempPerson = new Person();
+        boolean okClicked = mainApp.showPersonEditDialog(tempPerson);
+        if (okClicked) {
+            mainApp.getPersonData().add(tempPerson);
+        }
+    }
+
+    /**
+     * Editボタンをクリックしたら呼び出される。
+     * 選択したPersonの編集用ダイアログを表示する
+     */
+    @FXML
+    private void handleEditPerson() throws IOException {
+        Person selectedPerson = personTable.getSelectionModel().getSelectedItem();
+        if (selectedPerson != null) {
+            boolean okClicked = mainApp.showPersonEditDialog(selectedPerson);
+            if (okClicked) {
+                showPersonDetails(selectedPerson);
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.initOwner(mainApp.getPrimaryStage());
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Person Selected");
+            alert.setContentText("Please select a person in the table.");
+
+            alert.showAndWait();
+        }
+
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ryosms.address;
 
 import com.ryosms.address.model.Person;
+import com.ryosms.address.view.PersonEditDialogController;
 import com.ryosms.address.view.PersonOverviewController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -9,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -99,4 +101,36 @@ public class MainApp extends Application {
         launch(args);
     }
 
+    /**
+     * パラメータで指定したPersonの詳細を編集するダイアログを開きます
+     * ユーザがOKボタンをクリックした場合、変更内容がパラメータに保存され、trueを返します。
+     *
+     * @param person 編集対象のPersonオブジェクト
+     * @return ユーザーがOKボタンをクリックしたらtrueを返します。それ以外はfalseを返します。
+     * @throws IOException
+     */
+    public boolean showPersonEditDialog(Person person) throws IOException {
+        // Person Edit DialogのFXMLを読み込む
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/PersonEditDialog.fxml"));
+        AnchorPane page = loader.load();
+
+        // Dialog用のStageを生成する
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Edit Person");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        // Personオブジェクトをコントローラにセットする
+        PersonEditDialogController controller = loader.getController();
+        controller.setDialogStage(dialogStage);
+        controller.setPerson(person);
+
+        // ダイアログを表示して閉じられるまで待機
+        dialogStage.showAndWait();
+
+        return controller.isOkClicked();
+    }
 }
