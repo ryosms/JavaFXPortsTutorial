@@ -1,6 +1,7 @@
 package com.ryosms.address;
 
 import com.ryosms.address.model.Person;
+import com.ryosms.address.model.PersonListWrapper;
 import com.ryosms.address.view.PersonEditDialogController;
 import com.ryosms.address.view.PersonOverviewController;
 import javafx.application.Application;
@@ -8,12 +9,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.IOException;
 import java.util.prefs.Preferences;
@@ -174,4 +180,64 @@ public class MainApp extends Application {
             primaryStage.setTitle("AddressApp");
         }
     }
+
+    /**
+     * 指定されたファイルからpersonデータを読み込む
+     * 現在のpersonデータは置き換えられる
+     *
+     * @param file
+     */
+    public void loadPersonDataFromFile(File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(PersonListWrapper.class);
+            Unmarshaller um = context.createUnmarshaller();
+
+            // ファイルからXMLを読み込んで復元する
+            PersonListWrapper wrapper = (PersonListWrapper) um.unmarshal(file);
+
+            personData.clear();
+            personData.addAll(wrapper.getPersons());
+
+            // レジストリにパスを保存する
+            setPersonFilePath(file);
+        } catch (JAXBException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not load data");
+            alert.setContentText("Could not load data from file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
+
+    /**
+     * 表示中のpersonデータを指定されたファイルに保存する
+     *
+     * @param file
+     */
+    public void savePersonDataToFile(File file) {
+        try {
+            JAXBContext context = JAXBContext.newInstance(PersonListWrapper.class);
+            Marshaller m = context.createMarshaller();
+            m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            // 現在のpersonデータをwrapする
+            PersonListWrapper wrapper = new PersonListWrapper();
+            wrapper.setPersons(personData);
+
+            // ファイルにXMLとして保存する
+            m.marshal(wrapper, file);
+
+            // レジストリにパスを保存する
+            setPersonFilePath(file);
+        } catch (JAXBException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Could not save data");
+            alert.setContentText("Could not save data to file:\n" + file.getPath());
+
+            alert.showAndWait();
+        }
+    }
+
 }
