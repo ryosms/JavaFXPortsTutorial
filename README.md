@@ -5,7 +5,7 @@
 
 ### Require
 
-* Java 8u20 or later
+* Java 8u40 or later
 
 for using `android`
 
