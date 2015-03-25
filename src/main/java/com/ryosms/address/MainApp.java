@@ -4,6 +4,7 @@ import com.ryosms.address.model.Person;
 import com.ryosms.address.model.PersonListWrapper;
 import com.ryosms.address.view.PersonEditDialogController;
 import com.ryosms.address.view.PersonOverviewController;
+import com.ryosms.address.view.RootLayoutController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -80,7 +81,18 @@ public class MainApp extends Application {
         // root layoutをSceneに表示する
         Scene scene = new Scene(rootLayout);
         primaryStage.setScene(scene);
+
+        // コントローラクラスを接続する
+        RootLayoutController controller = loader.getController();
+        controller.setMainApp(this);
+
         primaryStage.show();
+
+        // 最後に開いていたファイルがあれば再読み込みする
+        File file = getPersonFilePath();
+        if (file != null) {
+            loadPersonDataFromFile(file);
+        }
     }
 
     /**
