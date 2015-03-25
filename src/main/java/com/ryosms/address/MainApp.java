@@ -14,7 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.prefs.Preferences;
 
 /**
  * Created by ryosms on 2015/03/14.
@@ -136,5 +138,40 @@ public class MainApp extends Application {
         dialogStage.showAndWait();
 
         return controller.isOkClicked();
+    }
+
+    /**
+     * 最後に開いていたpersonファイルを設定より取得する
+     * 設定はOSで指定されたレジストリから読み込む
+     * 設定が存在しない場合はnullを返す
+     *
+     * @return
+     */
+    public File getPersonFilePath() {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        String filePath = prefs.get("filePath", null);
+        if (filePath != null) {
+            return new File(filePath);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 読み込み中のファイルパスをOSのレジストリにセットする
+     *
+     * @param file 読み込み中ファイル。nullの場合は設定を削除する
+     */
+    public void setPersonFilePath(File file) {
+        Preferences prefs = Preferences.userNodeForPackage(MainApp.class);
+        if (file != null) {
+            prefs.put("filePath", file.getPath());
+
+            // Stageのタイトルを更新する
+            primaryStage.setTitle("AddressApp - " + file.getName());
+        } else {
+            prefs.remove("filePath");
+            primaryStage.setTitle("AddressApp");
+        }
     }
 }
