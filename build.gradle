@@ -2,23 +2,14 @@ buildscript {
     repositories {
         jcenter()
     }
-
-    dependencies {
-        classpath 'org.javafxports:jfxmobile-plugin:1.0.0-b7'
-    }
 }
 
-apply plugin: 'org.javafxports.jfxmobile'
-
-mainClassName = 'com.ryosms.address.MainApp'
+apply from: 'http://dl.bintray.com/content/shemnon/javafx-gradle/8.1.1/javafx.plugin'
 
 repositories {
     jcenter()
 }
 
-jfxmobile {
-    android {
-        applicationPackage = 'com.ryosms.address'
-    }
+javafx {
+    mainClass = 'com.ryosms.address.MainApp'
 }
-
