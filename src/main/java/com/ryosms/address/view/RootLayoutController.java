@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.stage.FileChooser;
 
 import java.io.File;
+import java.io.IOException;
 
 /**
  * root layoutのコントローラークラス
@@ -107,4 +108,11 @@ public class RootLayoutController {
         System.exit(0);
     }
 
+    /**
+     * 誕生日の統計を表示する
+     */
+    @FXML
+    private void handleShowBirthdayStatistics() throws IOException {
+        mainApp.showBirthdayStatistics();
+    }
 }

@@ -2,6 +2,7 @@ package com.ryosms.address;
 
 import com.ryosms.address.model.Person;
 import com.ryosms.address.model.PersonListWrapper;
+import com.ryosms.address.view.BirthdayStatisticsController;
 import com.ryosms.address.view.PersonEditDialogController;
 import com.ryosms.address.view.PersonOverviewController;
 import com.ryosms.address.view.RootLayoutController;
@@ -252,4 +253,25 @@ public class MainApp extends Application {
         }
     }
 
+    /**
+     * 誕生日の統計を表示するためのダイアログを開く
+     */
+    public void showBirthdayStatistics() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(MainApp.class.getResource("view/BirthdayStatistics.fxml"));
+
+        AnchorPane page = loader.load();
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Birthday Statistics");
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(primaryStage);
+        Scene scene = new Scene(page);
+        dialogStage.setScene(scene);
+
+        // コントローラにPersonデータをセットする
+        BirthdayStatisticsController controller = loader.getController();
+        controller.setPersonData(personData);
+
+        dialogStage.show();
+    }
 }
